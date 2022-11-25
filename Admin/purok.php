@@ -121,6 +121,11 @@ body { background: gray !important; }
           <i class="fas fa-fw fa fa-file"></i>
           <span>Transaction</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="blotter.php">
+          <i class="fas fa-fw fa fa-file"></i>
+          <span>Blotter</span></a>
+      </li>
       
     </ul>
 
@@ -163,22 +168,8 @@ body { background: gray !important; }
                         </select>
                       </div>
                       <div class="form-group">
-                        <label for="message-text" class="col-form-label">Purok Leader:</label>
-                         <select name="prk_leader" style="padding: 5x;" class="form-control">
-                          <?php
-                  	$sel = mysqli_query($connection, "SELECT * FROM household_head");
-      				
-      				while ($i = $sel -> fetch_array()){
-      				  $db_first_name_resident = $i['first_name'];
-      				  $db_last_name_resident = $i['last_name'];
-      				  $db_middle_name_resident = $i['middle_name'];
-      				  $fullname_resident = ucfirst($db_first_name_resident)." ".ucfirst($db_middle_name_resident[0]).". ".ucfirst($db_last_name_resident);
-      					echo "<option value='".$fullname_resident."'";
-      					if (@$_POST['resident_id'] == $fullname_resident)
-      							echo " selected";
-      							echo ">$fullname_resident</option>";
-      				}
-                          ?>
+                        <label for="message-text" class="col-form-label">Full name:</label>
+                        <input class="form-control" type="text" name="prk_leader" value="" />
                   </select>
                       </div>
                     

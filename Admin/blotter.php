@@ -1,22 +1,8 @@
-<?php 
-
+<?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-  include("connection.php");
-include("header.php");
-if(isset($_SESSION["user_id"])){
-    $user_id = $_SESSION["user_id"];
-    $get_record = mysqli_query($connection, "SELECT * FROM users WHERE user_id = '$user_id'");
-    $row = mysqli_fetch_assoc($get_record);
-    $db_first_name = $row["username"];
-    $db_user_id = $row ["user_id"];
-}else{
-      echo "<script>window.location.href='../'</script>";
-
-}
-
-?>
+include("connection.php"); include("header.php");?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,10 +32,10 @@ if(isset($_SESSION["user_id"])){
     margin-top:10%;
     margin-left:5%;
 }
-#admin {
+  #admin {
 
     color:white;
-} 
+}
 body { background: gray !important; }
 </style>
 </head>
@@ -68,20 +54,20 @@ body { background: gray !important; }
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="input-group">
         <div class="input-group-append">
-          
         </div>
       </div>
     </form>
 
     <!-- Navbar -->
-    <div id="admin"><?php echo "Welcome $db_first_name_session";?></div>
+     <div id="admin"><?php echo "Welcome $db_first_name";?></div>
     <ul class="navbar-nav ml-auto ml-md-0">
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="manage.php">Manage Account</a>
+                    <a class="dropdown-item" href="manage.php">Manage Account</a>
+
           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
         </div>
       </li>
@@ -93,8 +79,8 @@ body { background: gray !important; }
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
-       <li class="nav-item">
-      <div id="forimage">
+      <li class="nav-item">
+   <div id="forimage">
      <p class="help-block"><img class="img-responsive"  src="<?php echo "$profile_user"; ?>" style="width:200px;height:170px;border:2px solid black;margin:5%;border-radius:50%;" ></p>
             </div>
       </li>
@@ -110,12 +96,12 @@ body { background: gray !important; }
           <span>Add Household Head</span>
         </a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="record.php">
           <i class="fas fa-fw fa fa-database"></i>
           <span>Record</span></a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item ">
         <a class="nav-link" href="purok.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Purok</span></a>
@@ -125,17 +111,17 @@ body { background: gray !important; }
           <i class="fas fa-fw fa fa-users icon-1"></i>
           <span>Barangay Functionaries</span></a>
       </li>
-      <li class="nav-item">
+            <li class="nav-item">
         <a class="nav-link" href="report.php">
           <i class="fas fa-fw fa fa-file"></i>
           <span>Reports</span></a>
       </li>
-      <li class="nav-item ">
+       <li class="nav-item">
         <a class="nav-link" href="transaction.php">
           <i class="fas fa-fw fa fa-file"></i>
           <span>Transaction</span></a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="blotter.php">
           <i class="fas fa-fw fa fa-file"></i>
           <span>Blotter</span></a>
@@ -149,134 +135,118 @@ body { background: gray !important; }
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="record.php">Record</a>
+            <a href="purok.php">Blotter</a>
           </li>
           <li class="breadcrumb-item active">Overview</li>
         </ol>
 
- 
-        <!-- DataTables -->
-       
-          <div class="card mb-3">
+        <!-- MOdal add leader -->
+     
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Blotter</button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Blotter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+          <form method="POST">
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label">Full name:</label>
+                        <input class="form-control" type="text" name="prk_leader" value="" placeholder="Fulll Name" />
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label">Reason:</label>
+                        <input class="form-control" type="text" name="reason" value="" placeholder="Reason"  />
+                  </select>
+                      </div>
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" name="add" class="btn btn-primary" value="Add Leader"/>
+          </form>
+                      <?php 
+                if (isset($_POST['add'])){
+                    $reason = $_POST['reason'];
+                    $prk_leader = $_POST['prk_leader'];
+                  
+                    if (empty($reason)){
+                      echo "<script> alert('Reason is Required!')</script>";
+                    }else {
+                      $reason = $_POST['reason'];
+                    }
+                     if (empty($prk_leader)){
+                      echo "<script> alert('Name is Required!')</script>";
+                    }else {
+                      $prk_leader = $_POST['prk_leader'];
+                    }
+                  if ($reason &&  $prk_leader){
+                    /// check purok leader is exist
+                        $addsql = mysqli_query($connection,"INSERT INTO blotter (full_name,reason) VALUES ('$prk_leader','$reason')");
+                                        
+                        if ($addsql === TRUE) {
+                            mysqli_query($connection, "INSERT INTO reports (username,remarks,report_datetime,user_id) VALUES ('$db_first_name','$prk_leader Blotter',NOW(),$user_id)");
+                            
+                            echo "<script> alert('$prk_leader Purok Leader has been successfully registered'); </script>";
+                        }
+                    }
+                }
+                  ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+         <!--tables -->   
+         <br>
+         <br>
+        <div class="card mb-3">
           <div class="card-header">
-            <i class="fas fa-database"></i>
-           List of Resident's </div>
+            <i class="fas fa-table"></i>
+            Purok List</div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover " id="dataTable" width="100%" cellspacing="0">
-                <thead class="thead-dark">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead class="thead-dark ">
                   <tr>
-                     <th><center>Profile</center></th>
-                    <th>House No.</th>
-                    <th>ID No.</th>
                     <th>Name</th>
-                    <th>Nickname</th>
-                    <th>House Status</th>
-                     <th>Family Status </th>
-                    <th>Purok No.</th>
-                    <th>Purok leader</th>
-                    <th>Date Register</th>
+                    <th>Reason</th>
                     <th><center>Action</center></th>
                   </tr>
                 </thead>
                 <tfoot>
                   <tr>
-                    <th><center>Profile</center></th>
-                    <th>House No.</th>
-                    <th>ID No.</th>
                     <th>Name</th>
-                    <th>Nickname</th>
-                    <th>House Status</th>
-                    <th>Family Status </th>
-                    <th>Purok No.</th>
-                    <th>Purok Leader</th>
-                     <th>Date Register</th>
+                    <th>Reason</th>
                     <th><center>Action</center></th>
                   </tr>
                 </tfoot>
                 <tbody>
-      
-                  
-                     <?php 
-                     include("connection.php");
-                     
-          $sel = "SELECT * FROM household_head INNER JOIN purok ON purok.prk_id=household_head.prk_id ";
-					$selqsl = mysqli_query($connection,$sel);
-							
-						while($i = $selqsl -> fetch_array()){
-						  $db_profile_pic_head = $i['profile_picture'];
-						  $dbfirstname = $i['first_name'];
-						  $dbmiddlename = $i['middle_name'];
-						  $dblastname = $i['last_name'];
-						  $dbnickname = $i['nickname'];
-						   $status = $i['house_head'];
-						   $ucstatus = ucfirst($status);
-						  $ucnickname = ucfirst($dbnickname);
-						  $fullname = ucfirst($dbfirstname)." ".ucfirst($dbmiddlename[0]).". ".ucfirst($dblastname);
-						  $resident_id1 = $i['resident_id1'];
-							
-							if ($status === 'house head'){
-							echo "<tr>";
-						echo "<td>
-						<img class='img-responsive'  src='$db_profile_pic_head' style='width:100px;height:100px;border:2px solid black;margin:5%;' >
-						</td>";	
-						echo "<td><center style='padding-top:40px;'>$i[1]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[2]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$fullname</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$ucnickname</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[12]</centeR></td>";
-					echo "<td><center style='padding-top:40px;'>$ucstatus</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[19]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[20]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[14]</centeR></td>";
-							echo "<Td colspan='2'>
-							   <center style='padding-top:40px;'>
-							    <a href='edit.php?resident_id=$i[0]'  data-toggle='tooltip' title='Edit Household Head' ><i class='fa fa-user-edit' style='font-size:20px'></i></a>|
-							   <a href='view.php?resident_id=$i[0]' data-toggle='tooltip' title='View Family Member'><i class='fa fa-eye' style='font-size:20px'></i></a> |
-							    <a href='addmember.php?resident_id=$i[0]' data-toggle='tooltip' title='Add Family Member' ><i class='fa fa-user-plus' style='font-size:20px'></i></a> |
-							     <a href='file.php?resident_id=$i[0]' data-toggle='tooltip' title='Documents'  ><i class='fa fa-file' style='font-size:17px'></i></a> |
-							    <a href='delete.php?resident_id=$i[0]' data-toggle='tooltip' title='Delete '  ><i class='fa fa-trash'style='font-size:17px' ></i></a>
-							    </center>
-							</td>";
-							  echo "</tr>";
-							}elseif ($status === 'family member'){
-							  	echo "<tr style='background-color:#cccccc; color:black;'>";
-						echo "<td>
-						<img class='img-responsive'  src='$db_profile_pic_head' style='width:100px;height:100px;border:2px solid black;margin:5%;' >
-						</td>";	
-						echo "<td><center style='padding-top:40px;'>$i[1]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[2]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$fullname</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$ucnickname</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[12]</centeR></td>";
-					echo "<td><center style='padding-top:40px;'>$ucstatus</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[19]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[20]</centeR></td>";
-						echo "<td><center style='padding-top:40px;'>$i[14]</centeR></td>";
-							echo "<Td colspan='2'>
-							   <center style='padding-top:40px;'>
-							    <a href='editmember.php?resident_id=$i[0]' data-toggle='tooltip' title='Edit Family Member'  ><i class='fa fa-user-edit' style='font-size:20px'></i></a>|
-							   <a href='viewmember.php?resident_id=$i[0]' data-toggle='tooltip' title='View Profile' ><i class='fa fa-eye' style='font-size:20px'></i></a> |
-							     <a href='file.php?resident_id=$i[0]'  data-toggle='tooltip' title='Documents' ><i class='fa fa-file' style='font-size:17px'></i></a> |
-							    <a href='delete.php?resident_id=$i[0]'  data-toggle='tooltip' title='Delete' ><i class='fa fa-trash'style='font-size:17px' ></i></a>
-							    </center>
-							</td>";
-							  echo "</tr>";
-							}
-							
-					
-					} 
-					
-					
-           ?>
+                 <?php 
+                   $sel = "SELECT * FROM blotter";
+        					$selqsl = mysqli_query($connection,$sel);
+        							
+        						while($i = $selqsl -> fetch_array()){
+        							echo "<tr>";
+        							echo "<td>$i[1]</td>";
+        							echo "<td>$i[2]</td>";
+        						    	echo "<Td>
+        							    <center>
+        							    <a href='deleteblotter.php?prk_id=$i[0]' data-toggle='tooltip' title='Delete' ><i class='fa fa-trash'style='font-size:17px' ></i></a>
+        							    </center>
+        							</td>";
+        							echo "</tr>";
+        						
+        					} 
+                 ?>
                 </tbody>
               </table>
             </div>
           </div>
-          <div class="card-footer small text-muted"><!--update --></div>
         </div>
-
-      </div>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
@@ -287,7 +257,7 @@ body { background: gray !important; }
           </div>
         </div>
       </footer>
-    <?php include("footer.php"); ?>
+
     </div>
     <!-- /.content-wrapper -->
 
@@ -318,13 +288,13 @@ body { background: gray !important; }
     </div>
   </div>
 
-  
-<!-- Bootstrap core JavaScript-->
+  <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
   <!-- Page level plugin JavaScript-->
   <script src="vendor/chart.js/Chart.min.js"></script>
   <script src="vendor/datatables/jquery.dataTables.js"></script>
@@ -336,12 +306,11 @@ body { background: gray !important; }
   <!-- Demo scripts for this page-->
   <script src="js/demo/datatables-demo.js"></script>
   <script src="js/demo/chart-area-demo.js"></script>
-<script>
+  <script>
 $(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();   
+  $('[data-toggle="tooltip"]').tooltip(); 
 });
 </script>
 </body>
 
 </html>
-

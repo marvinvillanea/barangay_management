@@ -123,7 +123,11 @@ body { background: gray !important; }
           <i class="fas fa-fw fa fa-file"></i>
           <span>Transaction</span></a>
       </li>
-      
+      <li class="nav-item">
+        <a class="nav-link" href="blotter.php">
+          <i class="fas fa-fw fa fa-file"></i>
+          <span>Blotter</span></a>
+      </li>
     </ul>
 
     <div id="content-wrapper">

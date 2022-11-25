@@ -120,7 +120,11 @@ body { background: gray !important; }
           <i class="fas fa-fw fa fa-file"></i>
           <span>Transaction</span></a>
       </li>
-      
+      <li class="nav-item">
+        <a class="nav-link" href="blotter.php">
+          <i class="fas fa-fw fa fa-file"></i>
+          <span>Blotter</span></a>
+      </li>
     </ul>
 
     <div id="content-wrapper">
@@ -504,17 +508,21 @@ body { background: gray !important; }
                  <?php 
                    $sel = "SELECT * FROM barangay_officials INNER JOIN household_head ON barangay_officials.resident_id=household_head.resident_id WHERE brg_position LIKE '%Barangay Captain'";
         					$selqsl = mysqli_query($connection,$sel);
-        						while($i = $selqsl -> fetch_array()){
-        						  $db_picture_cap = $i['profile_picture'];
-        						    $db_first_name_sec = $i['first_name'];
-      				      $db_last_name_sec = $i['last_name'];
-      				      $db_middle_name_sec= $i['middle_name'];
-      				       $fullname_cap = ucfirst($db_first_name_sec)." ".ucfirst($db_middle_name_sec[0]).". ".ucfirst($db_last_name_sec);
+                  $rowcount = mysqli_num_rows( $selqsl );
+                  if($rowcount > 0) {
+                    while($i = $selqsl -> fetch_array()){
+                        $db_picture_cap = $i['profile_picture'];
+                        $db_first_name_sec = $i['first_name'];
+                        $db_last_name_sec = $i['last_name'];
+                        $db_middle_name_sec= $i['middle_name'];
+                        $fullname_cap = ucfirst($db_first_name_sec)." ".ucfirst($db_middle_name_sec[0]).". ".ucfirst($db_last_name_sec);
 
-        					} 
+                    } 
+                      
+                    echo "<img class='img-responsive'  src='$db_picture_cap' style='width:150px;height:100px;'><br>";
+                    echo "<h4><u>$fullname_cap</u></h4><b>Barangay Captain</b>";
+                  }
         						
-        					echo 		"<img class='img-responsive'  src='$db_picture_cap' style='width:150px;height:100px;'><br>";
-        				echo "<h4><u>$fullname_cap</u></h4><b>Barangay Captain</b>";
                  ?>
               
            
@@ -524,18 +532,20 @@ body { background: gray !important; }
                  <?php 
                    $sel = "SELECT * FROM barangay_officials INNER JOIN household_head ON barangay_officials.resident_id=household_head.resident_id WHERE brg_position LIKE '%Barangay Secretary'";
         					$selqsl = mysqli_query($connection,$sel);
-        							
-        						while($i = $selqsl -> fetch_array()){
+        					$rowcount = mysqli_num_rows( $selqsl );
+                  if($rowcount > 0) {
+                    while($i = $selqsl -> fetch_array()){
         						  $db_picture_sec = $i['profile_picture'];
-        						    $db_first_name_sec = $i['first_name'];
-      				      $db_last_name_sec = $i['last_name'];
-      				      $db_middle_name_sec= $i['middle_name'];
-      				       $fullname_sec = ucfirst($db_first_name_sec)." ".ucfirst($db_middle_name_sec[0]).". ".ucfirst($db_last_name_sec);
+        						  $db_first_name_sec = $i['first_name'];
+                      $db_last_name_sec = $i['last_name'];
+                      $db_middle_name_sec= $i['middle_name'];
+      				        $fullname_sec = ucfirst($db_first_name_sec)." ".ucfirst($db_middle_name_sec[0]).". ".ucfirst($db_last_name_sec);
  		
         					} 
+                    echo 		"<img class='img-responsive'  src='$db_picture_sec' style='width:150px;height:100px;'><br>";
+                    echo "<h4><u>$fullname_sec</u></h4><b>Barangay Secretary</b>";
+                  }		
         						
-        							echo 		"<img class='img-responsive'  src='$db_picture_sec' style='width:150px;height:100px;'><br>";
-        							echo "<h4><u>$fullname_sec</u></h4><b>Barangay Secretary</b>";
                  ?>
               </div>
               <div id ="kaga" style="border-top:2px solid black;">
